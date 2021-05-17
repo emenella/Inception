@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  mariadb:
+    build:
+      dockerfile: Dockerfile
+      context: ./mariadb
+    restart: unless-stopped
+    tty: true
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_DATABASE=wordpress
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - cluster
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ~/data/static:/static/
+    networks:
+      - cluster
+    ports:
+      - "433:433"
+      - "80:80"
+    depends_on:
+      - wordpress
+  wordpress:
+    build:
+      dockerfile: Dockerfile
+      context: ./wordpress
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - cluster
+    expose:
+      - "9000"
+    depends_on:
+      - mariadb
+    env_file: .env
+    environment:
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=wordpress
+
+volumes:
+  wordpress:
+  dbdata:
+
+networks:
+    cluster:
+        driver: bridge

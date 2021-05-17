@@ -1,0 +1,3 @@
+FROM debian:buster
+RUN apt-get update && apt-get upgrade
+RUN apt-get install wordpress php7.3 php7.3-fpm php7.3-curl php7.3-json php7.3-mysql -y

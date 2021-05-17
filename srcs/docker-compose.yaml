@@ -1,47 +1,47 @@
-version: "3.8"
+version: '3'
+
 services:
-    wordpress:
-        build:
-            dockerfile: Dockerfile
-            context: ./wordpress
-        ports: 
-            - 9000:80
-        volumes:
-            - wordpress:/var/lib/wordpress
-        depends_on: 
-            - mysql
-            - nginx
-        networks:
-            - cluster
-    mysql:
-        build:
-            dockerfile: Dockerfile
-            context: ./mysql
-        ports:
-            - 3306:3306
-        volumes:
-            - mysql:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: rootpass
-            MYSQL_DATABASE: wordpress
-            MYSQL_USER: wordpress
-            MYSQL_PASSWORD: password
-        restart: always
-        networks:
-            - cluster
-    nginx:
-        build:
-            dockerfile: Dockerfile
-            context: ./nginx
-        ports: 
-            - 443:433
-        networks:
-            - cluster
+  mariadb:
+    build:
+      dockerfile: Dockerfile
+      context: ./mariadb
+    restart: unless-stopped
+    tty: true
+    expose:
+      - 3306
+    volumes:
+      - ~/data/mariadb:/var/lib/mysql
+    networks:
+      - app-network
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ~/data/static:/static/
+    networks:
+      - app-network
+    expose:
+      - 443
+    depends_on:
+      - wordpress
+  wordpress:
+    build:
+      dockerfile: Dockerfile
+      context: ./wordpress
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ~/data/static:/static/
+    networks:
+      - app-network
+    expose:
+      - 9000
+    depends_on:
+      - mariadb
+
 networks:
-    cluster:
-        driver: bridge
-volumes:
-    mysql:
-    wordpress:
-
-
+  app-network:
+    driver: bridge

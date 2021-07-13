@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mariadb:
-    image: mariadb
+    build: ./mariadb
     restart: always
     container_name: mariadb
     env_file: .env
@@ -16,6 +16,8 @@ services:
     build: ./nginx/
     restart: always
     container_name: nginx
+    volumes:
+      - wordpress:/var/www/wordpress
     networks:
       - cluster
     ports:
@@ -27,19 +29,17 @@ services:
     build: ./wordpress/
     container_name: wordpress
     restart: always
-    ports:
-      - 9000:9000
     volumes:
-      - wordpress:/var/www/wordpress/
+      - wordpress:/var/www/wordpress
+    environment:
+      - DB_HOST=mariadb
+      - DB_USER=$MYSQL_USER
+      - DB_PASSWORD=$MYSQL_PASSWORD
+      - DB_DATABASE=$MYSQL_DATABASE
     networks:
       - cluster
     depends_on:
       - mariadb
-    environment:
-      - DB_HOST=mariadb
-      - DB_USER=MYSQL_USER
-      - DB_PASSWORD=$MYSQL_PASSWORD
-      - DB_NAME=$MYSQL_DATABASS
 
 volumes:
   wordpress:

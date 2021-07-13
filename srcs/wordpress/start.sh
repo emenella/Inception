@@ -1,7 +1,6 @@
 #!/bin/bash
 
-cd /var/www/
-wget -c https://fr.wordpress.org/latest-fr_FR.tar.gz -O - | tar -xz
-cd ./wordpress/
-cp /srcs/wp-config.php ./wp-config.php
-php -S wordpress:9000
+cd /var/www/wordpress
+/etc/init.d/php7.3-fpm start
+/etc/init.d/php7.3-fpm stop
+php-fpm7.3 -F -R

@@ -19,7 +19,7 @@
  */
 
 // ** MySQL settings - You can get this info from your web host ** //
-define( 'DB_NAME', getenv('MYSQL_DATABASS') );
+define( 'DB_NAME', getenv('DB_DATABASE') );
 /** MySQL database username */
 define( 'DB_USER', getenv('DB_USER') );
 /** MySQL database password */
@@ -76,8 +76,6 @@ $table_prefix = 'wp_';
 define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
-
-
 
 /* That's all, stop editing! Happy publishing. */
 

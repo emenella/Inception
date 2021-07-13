@@ -3,4 +3,5 @@
 cd /var/www/
 wget -c https://fr.wordpress.org/latest-fr_FR.tar.gz -O - | tar -xz
 cd ./wordpress/
-php -S localhost:9000
+cp /srcs/wp-config.php ./wp-config.php
+php -S wordpress:9000

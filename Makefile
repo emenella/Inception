@@ -1,5 +1,5 @@
 all:
-	cd ./srcs && docker-compose up --build
+	cd ./srcs && docker-compose up --build -d
 clean:
 	cd ./srcs && docker-compose down
 	cd ./srcs && docker volume rm srcs_dbdata

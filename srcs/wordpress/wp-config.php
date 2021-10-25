@@ -19,13 +19,13 @@
  */
 
 // ** MySQL settings - You can get this info from your web host ** //
-define( 'DB_NAME', getenv('DB_DATABASE') );
+define( 'DB_NAME', getenv('MYSQL_DATABASE') );
 /** MySQL database username */
-define( 'DB_USER', getenv('DB_USER') );
+define( 'DB_USER', getenv('MYSQL_USER') );
 /** MySQL database password */
-define( 'DB_PASSWORD', getenv('DB_PASSWORD') );
+define( 'DB_PASSWORD', getenv('MYSQL_PASSWORD') );
 /** MySQL hostname */
-define( 'DB_HOST', getenv('DB_HOST') );
+define( 'DB_HOST', getenv('MYSQL_HOST') );
 /** Database charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
 /** The database collate type. Don't change this if in doubt. */

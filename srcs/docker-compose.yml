@@ -6,8 +6,6 @@ services:
     restart: always
     container_name: mariadb
     env_file: .env
-    ports:
-      - 3306:3306
     volumes:
       - dbdata:/var/lib/mysql
     networks:
@@ -31,12 +29,9 @@ services:
     restart: always
     volumes:
       - wordpress:/var/www/wordpress
+    env_file: .env
     environment:
-      - DB_HOST=mariadb
-      - DB_USER=$MYSQL_USER
-      - DB_PASSWORD=$MYSQL_PASSWORD
-      - DB_DATABASE=$MYSQL_DATABASE
-      - INTRANAME=$INTRANAME
+      - MYSQL_HOST=mariadb
     networks:
       - cluster
     depends_on:

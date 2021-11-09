@@ -1,8 +1,5 @@
 FROM alpine:3.14
 
-# Install php packages
-# Install dumb-init program to correctly handle signals    
-# Install wp-cli for auto-install of wordpress 
 RUN apk update && \
     apk add vim php7-fpm php7-opcache php7-common php7-iconv php7-json php7-gd \
     php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc \
@@ -21,12 +18,8 @@ COPY www.conf /etc/php7/php-fpm.d/www.conf
 COPY script.sh /home/script/script.sh
 COPY create_user_wp.sql /home/script/create_user_wp.sql
 
-# giving rights for execution
 RUN chmod 777 /home/script/script.sh
 
-EXPOSE 9000
-
-# Allow to handle correctly signals and dispatch them to other programs running
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 CMD ["sh", "-c", "/home/script/script.sh"]

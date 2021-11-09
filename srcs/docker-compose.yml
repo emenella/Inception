@@ -2,10 +2,15 @@ version: '3'
 
 services:
   mariadb:
-    build: ./mariadb
+    build:
+      context: ./mariadb
+      args:
+        - MYSQL_ROOT=${MYSQL_ROOT}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
     restart: always
     container_name: mariadb
-    env_file: .env
     volumes:
       - dbdata:/var/lib/mysql
     networks:
